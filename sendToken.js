@@ -1,7 +1,8 @@
+//Sends DATA tokens from the owner's wallet to a specified wallet for a specified amount
 const Web3 = require("web3");
-const NETWORK = "polygon-mumbai"
+const NETWORK = "polygon-mainnet"
 const INFURA_API_KEY = "e688007f8726451192c518e37fe0cdda"
-const tokenAddress = "0x2d7882beDcbfDDce29Ba99965dd3cdF7fcB10A1e";
+const tokenAddress = "0x3a9A81d576d83FF21f26f325066054540720fC34";
 
 let minABI = [
   // transfer
@@ -52,7 +53,9 @@ async function send(signerPrivateKey, destinationAddress, amount) {
   const tx = {
     from: signer.address,
     to: tokenAddress,
-    data: data
+    data: data,
+    gasPrice: web3.utils.toWei('150', 'gwei'),
+    gasLimit: 1000000
   };
 
   // Estimate gas
