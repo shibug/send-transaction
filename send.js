@@ -1,25 +1,28 @@
 const Web3 = require("web3");
+const NETWORK = "polygon-mainnet"
+const INFURA_API_KEY = "e688007f8726451192c518e37fe0cdda"
 
-async function main() {
+async function send(signerPrivateKey, destinationAddress, amount) {
+  
   // Configuring the connection to the Polygon node
-  const network = process.env.POLYGON_NETWORK;
   const web3 = new Web3(
     new Web3.providers.HttpProvider(
-      `https://${network}.infura.io/v3/${process.env.INFURA_API_KEY}`
+      `https://${NETWORK}.infura.io/v3/${INFURA_API_KEY}`
     )
   );
+
   // Creating a signing account from a private key
-  const signer = web3.eth.accounts.privateKeyToAccount(
-    process.env.SIGNER_PRIVATE_KEY
-  );
+  const signer = web3.eth.accounts.privateKeyToAccount(signerPrivateKey);
   web3.eth.accounts.wallet.add(signer);
+  
   // Creating the transaction object
   const tx = {
     from: signer.address,
-    to: process.env.DESTINATION_ADDRESS,
-    value: web3.utils.toWei(process.env.AMOUNT),
+    to: destinationAddress,
+    value: web3.utils.toWei(amount),
   };
-  // Assigning the right amount of gas
+
+  // Estimate gas
   tx.gas = await web3.eth.estimateGas(tx);
 
   // Sending the transaction to the network
@@ -29,9 +32,9 @@ async function main() {
       console.log(`Mining transaction ...`);
       console.log(`Transaction hash: ${txhash}`);
     });
+
   // The transaction is now on chain!
   console.log(`Mined in block ${receipt.blockNumber}`);
 }
 
-require("dotenv").config();
-main();
+send(process.argv[2], process.argv[3], process.argv[4]);

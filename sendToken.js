@@ -25,6 +25,8 @@ let minABI = [
         "type": "bool"
       }
     ],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ];
@@ -54,7 +56,7 @@ async function send(signerPrivateKey, destinationAddress, amount) {
     from: signer.address,
     to: tokenAddress,
     data: data,
-    gasPrice: web3.utils.toWei('150', 'gwei'),
+    gasPrice: web3.utils.toWei('160', 'gwei'),
     gasLimit: 1000000
   };
 
