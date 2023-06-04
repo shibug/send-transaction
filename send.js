@@ -20,7 +20,7 @@ async function send(signerPrivateKey, destinationAddress, amount) {
     from: signer.address,
     to: destinationAddress,
     value: web3.utils.toWei(amount),
-    gasPrice: web3.utils.toWei('160', 'gwei'),
+    gasPrice: web3.utils.toWei('170', 'gwei'),
     gasLimit: 1000000
   };
 

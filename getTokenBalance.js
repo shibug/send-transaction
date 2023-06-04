@@ -1,7 +1,9 @@
-//Sends DATA tokens from the owner's wallet to a specified wallet for a specified amount
+//Retrieves DATA tokens balance in a wallet
+
 const Web3 = require("web3");
 const NETWORK = "polygon-mainnet"
 const INFURA_API_KEY = "e688007f8726451192c518e37fe0cdda"
+const tokenAddress = "0x3a9A81d576d83FF21f26f325066054540720fC34";
 
 let minABI = [
   {
@@ -50,7 +52,6 @@ async function getTokenBalance(walletAddress, tokenAddress) {
   }
 }
 
-const tokenAddress = "0x3a9A81d576d83FF21f26f325066054540720fC34";
 getTokenBalance(process.argv[2], tokenAddress).then(balance => {
   console.log(`Token balance: ${balance} DATA`);
 })
