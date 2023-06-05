@@ -4,12 +4,6 @@ const Web3 = require("web3");
 const NETWORK = "polygon-mainnet"
 const INFURA_API_KEY = "e688007f8726451192c518e37fe0cdda"
 const tokenAddress = "0x3a9A81d576d83FF21f26f325066054540720fC34";
-
-// Initialize a connection to the Polygon (Matic) network
-const web3 = new Web3(
-  new Web3.providers.HttpProvider(`https://${NETWORK}.infura.io/v3/${INFURA_API_KEY}`)
-);
-
 let minABI = [
   {
     "constant": true,
@@ -55,16 +49,21 @@ let minABI = [
   }
 ];
 
+// Initialize a connection to the Polygon (Matic) network
+const web3 = new Web3(
+  new Web3.providers.HttpProvider(`https://${NETWORK}.infura.io/v3/${INFURA_API_KEY}`)
+);
+// Create a new instance of the token contract
+const contract = new web3.eth.Contract(minABI, tokenAddress);
+
 async function getTokenBalance(walletAddress, tokenAddress) {
 
   try {
-    // Create a new instance of the token contract
-    const contract = new web3.eth.Contract(minABI, tokenAddress);
-
+    
     // Get the balance of the token in the wallet address
     const balance = await contract.methods.balanceOf(walletAddress).call();
 
-    // Convert the balance from wei to Matic
+    // Convert the balance from wei to DATA
     const balanceInData = web3.utils.fromWei(balance);
 
     return balanceInData;
@@ -76,8 +75,6 @@ async function getTokenBalance(walletAddress, tokenAddress) {
 
 async function send(signerPrivateKey, destinationAddress, amount) {
 
-  // Get ERC-20 Token contract instance
-  let contract = new web3.eth.Contract(minABI, tokenAddress);
   let value = web3.utils.toWei(String(amount));
 
   // call transfer function
